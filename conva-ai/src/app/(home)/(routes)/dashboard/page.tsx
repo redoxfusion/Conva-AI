@@ -1,10 +1,11 @@
 import React from 'react'
 
-function Browse() {
+function Dashboard() {
   return (
-    <div>
+    <div className='flex w-full h-full items-center justify-center'>
+      Dasbhoard
     </div>
   )
 }
 
-export default Browse
+export default Dashboard

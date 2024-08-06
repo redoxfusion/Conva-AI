@@ -1,4 +1,5 @@
 import { File, Layout, Search } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 interface SideBarNavProps {
@@ -26,7 +27,7 @@ const SideBarNav: React.FC<SideBarNavProps> = ({ menuOpen }) => {
       id: 1,
       name: "document manager",
       icon: File,
-      path: "/documentManager",
+      path: "/file_manager",
     },
   ];
   return (
@@ -40,10 +41,10 @@ const SideBarNav: React.FC<SideBarNavProps> = ({ menuOpen }) => {
           { menuOpen && <h2>Navigation</h2>}
           <div className=" flex flex-col gap-2 ms-3">
             {navList.map((item, index) => (
-              <a className={`${menuOpen && 'flex gap-2'} p hover:text-[#cdcdcd]`} key={index}>
+              <Link href={item.path} className={`${menuOpen && 'flex gap-2'} p hover:text-[#cdcdcd]`} key={index}>
                 <item.icon />
                 <h2 className={`${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-300 ease-in-out`}>{item.name}</h2>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -52,10 +53,10 @@ const SideBarNav: React.FC<SideBarNavProps> = ({ menuOpen }) => {
           { menuOpen && <h2>Apps</h2>}
           <div className=" flex flex-col gap-2 ms-3">
             {appList.map((item, index) => (
-              <a className={`${menuOpen && 'flex gap-2'} p hover:text-[#cdcdcd]`} key={index}>
+              <Link href={item.path} className={`${menuOpen && 'flex gap-2'} p hover:text-[#cdcdcd]`} key={index}>
                 <item.icon />
                 <h2 className={`${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-300 ease-in-out`}>{item.name}</h2>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

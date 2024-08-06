@@ -1,6 +1,7 @@
 'use client';
 
 import type { PutBlobResult } from '@vercel/blob';
+import Link from 'next/link';
 import { useState, useRef } from 'react';
 
 export default function UploadPage() {
@@ -59,20 +60,18 @@ export default function UploadPage() {
           Upload
         </button>
       </form>
+        <Link href={'/all_Files'} className="w-full max-w-sm mt-5 text-center bg-[#191919] text-[#EEEEEE] font-bold py-2 px-4 rounded-md hover:bg-[#5e5e5e] transition-colors duration-300">View Files</Link>
 
       {blobs.length > 0 && (
         <div className="mt-6 bg-white p-4 rounded-lg shadow-md w-full max-w-md">
-          <p className="text-gray-700">Uploaded Blob URLs:</p>
+          <p className="text-gray-700">Upload Successful</p>
           <ul>
-            {blobs.map((blob) => (
-              <li key={blob.url}>
-                <a
-                  href={blob.url}
-                  className="text-blue-500 hover:underline break-all"
-                >
-                  {blob.url}
-                </a>
-              </li>
+            {blobs.map((blob, index) => (
+              <div key={index} className="mb-4 p-4 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700 break-all">{blob.pathname}</span>
+              </div>
+            </div>
             ))}
           </ul>
         </div>

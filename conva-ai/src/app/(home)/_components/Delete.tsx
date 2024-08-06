@@ -18,7 +18,7 @@ function Delete({url}: props) {
         });
         router.refresh();
       }}
-      className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors duration-300"
+      className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition-colors duration-300"
       >
         DELETE
       </button>
