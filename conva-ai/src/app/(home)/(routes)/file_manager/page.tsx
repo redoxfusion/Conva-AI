@@ -1,41 +1,82 @@
 'use client';
 
-import { formatFileSize } from '@edgestore/react/utils';
-'use client';
- 
-import * as React from 'react';
-import { useEdgeStore } from '../lib/edgestore';
- 
-export default function Page() {
-  const [file, setFile] = React.useState<File>();
-  const { edgestore } = useEdgeStore();
- 
+import type { PutBlobResult } from '@vercel/blob';
+import { useState, useRef } from 'react';
+
+export default function UploadPage() {
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [blobs, setBlobs] = useState<PutBlobResult[]>([]);
+
   return (
-    <div>
-      <input
-        type="file"
-        onChange={(e) => {
-          setFile(e.target.files?.[0]);
-        }}
-      />
-      <button
-        onClick={async () => {
-          if (file) {
-            const res = await edgestore.publicFiles.upload({
-              file,
-              onProgressChange: (progress) => {
-                // you can use this to show a progress bar
-                console.log(progress);
-              },
-            });
-            // you can run some server action or api here
-            // to add the necessary data to your database
-            console.log(res);
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <h1 className="text-3xl font-bold mb-6">Upload Your Files</h1>
+
+      <form
+        className="w-full max-w-md bg-white p-8 rounded-lg shadow-md"
+        onSubmit={async (event) => {
+          event.preventDefault();
+
+          if (!inputFileRef.current?.files) {
+            throw new Error("No files selected");
           }
+
+          const files = Array.from(inputFileRef.current.files);
+          const newBlobs: PutBlobResult[] = [];
+
+          for (const file of files) {
+            const response = await fetch(`/api/files?filename=${file.name}`, {
+              method: 'POST',
+              body: file,
+            });
+
+            const newBlob = (await response.json()) as PutBlobResult;
+            newBlobs.push(newBlob);
+          }
+
+          setBlobs(newBlobs);
         }}
       >
-        Upload
-      </button>
+        <div className="mb-4">
+          <label
+            htmlFor="file"
+            className="block text-gray-700 font-bold mb-2"
+          >
+            Choose files
+          </label>
+          <input
+            name="file"
+            ref={inputFileRef}
+            type="file"
+            multiple
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300"
+        >
+          Upload
+        </button>
+      </form>
+
+      {blobs.length > 0 && (
+        <div className="mt-6 bg-white p-4 rounded-lg shadow-md w-full max-w-md">
+          <p className="text-gray-700">Uploaded Blob URLs:</p>
+          <ul>
+            {blobs.map((blob) => (
+              <li key={blob.url}>
+                <a
+                  href={blob.url}
+                  className="text-blue-500 hover:underline break-all"
+                >
+                  {blob.url}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
