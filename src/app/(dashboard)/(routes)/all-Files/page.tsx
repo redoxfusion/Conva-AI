@@ -32,7 +32,7 @@ export default async function AllFilePage() {
       <h1 className="text-3xl font-bold mb-6">All Files</h1>
       <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md">
         {blobs.length ?
-          (blobs.map((blob: Blob, index) => (
+          (blobs.map((blob: Blob, index: number) => (
             <div key={index} className="mb-4 p-4 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700 break-all">{blob.pathname}</span>
