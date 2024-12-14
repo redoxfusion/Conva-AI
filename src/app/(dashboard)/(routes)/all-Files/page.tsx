@@ -5,6 +5,13 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
+interface Blob {
+  id: string;
+  pathname: string; // adjust this type according to your blob structure
+  blobUrl: string; // adjust this type according to your blob structure
+  updatedAt: Date; // adjust this type according to your blob structure
+}
+
 export default async function AllFilePage() {
   const { userId } = auth();
 
@@ -25,7 +32,7 @@ export default async function AllFilePage() {
       <h1 className="text-3xl font-bold mb-6">All Files</h1>
       <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md">
         {blobs.length ?
-          (blobs.map((blob, index) => (
+          (blobs.map((blob: Blob, index) => (
             <div key={index} className="mb-4 p-4 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700 break-all">{blob.pathname}</span>
